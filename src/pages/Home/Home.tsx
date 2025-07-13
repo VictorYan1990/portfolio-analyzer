@@ -1,11 +1,25 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
 const { Header } = Layout;
 
-const Home = ({ username }) => {
+interface HomeProps {
+  username: string | null;
+  handleLogout: () => void;
+}
+
+const Home: React.FC<HomeProps> = ({ username, handleLogout }) => {
+  // Dropdown menu for user options
+  const menu = (
+    <Menu>
+      <Menu.Item key="logout">
+        <a onClick={handleLogout}>Logout</a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Layout>
       <Header className="navbar">
@@ -20,27 +34,27 @@ const Home = ({ username }) => {
             {/* Spacer is not clickable */}
           </Menu.Item>
 
-          {/* Right-aligned item */}
+          {/* Right-aligned items */}
+          {!username && (
+            <Menu.Item key="register" className="nav-right">
+              <Link to="/register">Register</Link>
+            </Menu.Item>
+          )}
           <Menu.Item key="user" className="nav-right">
             {username ? (
-              <span className="username">{username}</span>
+              <Dropdown overlay={menu} trigger={['click']}>
+                <a href="#" className="username">
+                  {username} ▼
+                </a>
+              </Dropdown>
             ) : (
               <Link to="/login">Login</Link>
             )}
           </Menu.Item>
-
-          <Menu.Item key="register" className="nav-right">
-            {username ? (
-              <span className="username">{username}</span>
-            ) : (
-              <Link to="/Register">Register</Link>
-            )}
-          </Menu.Item>
-
         </Menu>
       </Header>
     </Layout>
   );
 };
 
-export default Home;
+export default Home; 

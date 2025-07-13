@@ -5,11 +5,22 @@ import './Register.css';
 
 const { Content } = Layout;
 
-const Register = () => {
-  const [loading, setLoading] = useState(false);
+interface RegisterFormValues {
+  username: string;
+  email: string;
+  password: string;
+  retypePassword: string;
+}
+
+interface RegisterResponse {
+  message?: string;
+}
+
+const Register: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: RegisterFormValues) => {
     setLoading(true);
 
     // Basic data to send to the server
@@ -44,7 +55,7 @@ const Register = () => {
         navigate('/login');
       } else {
         // If the API returns an error, show the message
-        const errorData = await response.json();
+        const errorData: RegisterResponse = await response.json();
         notification.error({
           message: 'Registration Failed',
           description: errorData.message || 'An error occurred. Please try again.',
@@ -115,4 +126,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Register; 

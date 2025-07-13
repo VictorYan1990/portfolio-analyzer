@@ -6,8 +6,23 @@ import './Login.css';
 
 const { Content } = Layout;
 
-const Login = ({ setUsername }) => {
-  const [loading, setLoading] = useState(false);   // useStatge is built-in hook, which returns [current_state, function_to_change]
+interface LoginProps {
+  setUsername: (username: string) => void;
+}
+
+interface LoginFormValues {
+  username: string;
+  password: string;
+}
+
+interface AuthResponse {
+  token?: string;
+  username?: string;
+  message?: string;
+}
+
+const Login: React.FC<LoginProps> = ({ setUsername }) => {
+  const [loading, setLoading] = useState<boolean>(false);   // useStatge is built-in hook, which returns [current_state, function_to_change]
   const navigate = useNavigate();
 
   // Check for an existing token on component mount
@@ -43,7 +58,7 @@ const Login = ({ setUsername }) => {
   }, [setUsername, navigate]);
   
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
     try {
       const response = await fetch('/auth', {
@@ -53,7 +68,7 @@ const Login = ({ setUsername }) => {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data: AuthResponse = await response.json();
 
         // Check if a token is returned
         if (data.token) {
@@ -76,7 +91,7 @@ const Login = ({ setUsername }) => {
         }
       } else {
         // Handle HTTP errors
-        const errorData = await response.json();
+        const errorData: AuthResponse = await response.json();
         notification.error({
           message: 'Login Failed',
           description: errorData.message || 'An error occurred during login.',
@@ -128,4 +143,4 @@ const Login = ({ setUsername }) => {
   );
 };
 
-export default Login;
+export default Login; 

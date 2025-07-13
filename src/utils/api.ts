@@ -1,6 +1,10 @@
-export const getAuthToken = () => localStorage.getItem('authToken');
+export const getAuthToken = (): string | null => localStorage.getItem('authToken');
 
-export const fetchWithAuth = async (url, options = {}) => {
+interface FetchOptions extends RequestInit {
+  headers?: Record<string, string>;
+}
+
+export const fetchWithAuth = async (url: string, options: FetchOptions = {}): Promise<any> => {
   const token = getAuthToken();
   if (!token) {
     throw new Error('No authentication token found');
@@ -16,4 +20,4 @@ export const fetchWithAuth = async (url, options = {}) => {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   return response.json();
-};
+}; 
