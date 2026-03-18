@@ -4,9 +4,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 
-interface AppProps {}
-
-function App({}: AppProps) {
+function App() {
   const [username, setUsername] = useState<string | null>(null); // Shared state for username
 
   const handleLogout = (): void => {

@@ -15,7 +15,9 @@ const Home: React.FC<HomeProps> = ({ username, handleLogout }) => {
   const menu = (
     <Menu>
       <Menu.Item key="logout">
-        <a onClick={handleLogout}>Logout</a>
+        <button type="button" onClick={handleLogout}>
+          Logout
+        </button>
       </Menu.Item>
     </Menu>
   );
@@ -26,7 +28,7 @@ const Home: React.FC<HomeProps> = ({ username, handleLogout }) => {
         <Menu mode="horizontal" theme="dark" className="menu">
           {/* Left-aligned item */}
           <Menu.Item key="logo" className="nav-left">
-            <a href="#">Vic Studio</a>
+            <Link to="/">Vic Studio</Link>
           </Menu.Item>
 
           {/* Spacer (empty space between items) */}
@@ -43,9 +45,9 @@ const Home: React.FC<HomeProps> = ({ username, handleLogout }) => {
           <Menu.Item key="user" className="nav-right">
             {username ? (
               <Dropdown overlay={menu} trigger={['click']}>
-                <a href="#" className="username">
+                <button type="button" className="username">
                   {username} ▼
-                </a>
+                </button>
               </Dropdown>
             ) : (
               <Link to="/login">Login</Link>
