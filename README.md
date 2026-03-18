@@ -68,3 +68,29 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Deploy Frontend to AWS
+
+This project uses GitHub Actions to deploy the CRA production build (`build/`) to an S3 bucket on every push to `main`.
+
+### Prerequisites
+
+Set the following GitHub Secrets in your repository:
+
+- `AWS_REGION`
+- `AWS_ROLE_ARN`
+- `S3_BUCKET_NAME`
+- `CLOUDFRONT_DISTRIBUTION_ID` (optional; if set, the workflow will invalidate `/index.html` and `/asset-manifest.json`)
+
+### What the workflow does
+
+1. Runs `npm ci`
+2. Runs `npm run build`
+3. Uploads/syncs `build/` to `S3_BUCKET_NAME` via `aws s3 sync --delete`
+
+### CloudFront reminder (still needed)
+
+When you configure CloudFront later, make sure it routes:
+
+- SPA deep links (for routes like `/login` and `/register`) to `index.html`
+- API paths used by this frontend (`/auth*` and `/users*`) to your backend (API Gateway / Lambda)
